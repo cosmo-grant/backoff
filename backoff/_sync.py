@@ -92,18 +92,18 @@ def retry_exception(target, wait_gen, exception,
         wait = _init_wait_gen(wait_gen, wait_gen_kwargs)
         while True:
             tries += 1
-            elapsed = timedelta.total_seconds(datetime.datetime.now() - start)
-            details = {
-                "target": target,
-                "args": args,
-                "kwargs": kwargs,
-                "tries": tries,
-                "elapsed": elapsed,
-            }
 
             try:
                 ret = target(*args, **kwargs)
             except exception as e:
+                elapsed = timedelta.total_seconds(datetime.datetime.now() - start)
+                details = {
+                    "target": target,
+                    "args": args,
+                    "kwargs": kwargs,
+                    "tries": tries,
+                    "elapsed": elapsed,
+                }
                 max_tries_exceeded = (tries == max_tries_value)
                 max_time_exceeded = (max_time_value is not None and
                                      elapsed >= max_time_value)
